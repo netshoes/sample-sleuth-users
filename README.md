@@ -7,7 +7,7 @@ Simple project to show how spring-clouh-sleuth works.
 ## Available APIs
 ### Create user
 ``` 
-# curl -X POST \
+curl -X POST \
   http://localhost:8080/users \
   -H 'Content-Type: application/json' \
   -d '{
@@ -17,8 +17,8 @@ Simple project to show how spring-clouh-sleuth works.
 
 ### Create random user
 ``` 
-# curl -X POST http://localhost:8080/users/someone 
+curl -X POST http://localhost:8080/users/someone 
 ```
 
 ### Listing users
-```# curl http://localhost:8080/users```
+```curl http://localhost:8080/users```
