@@ -1,11 +1,11 @@
 # Sample for Spring Cloud Sleuth - Users Microservice
 Simple project to show how spring-cloud-sleuth works.
 
-## Running
+# Running
 ```# mvn spring-boot:run```
 
-## Available APIs
-### Create user
+# Available APIs
+## Create user
 ``` 
 curl -X POST \
   http://localhost:8080/users \
@@ -15,10 +15,10 @@ curl -X POST \
 }'
 ```
 
-### Create random user
+## Create random user
 ``` 
 curl -X POST http://localhost:8080/users/someone
 ```
 
-### Listing users
+## Listing users
 ```curl http://localhost:8080/users```
