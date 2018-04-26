@@ -3,6 +3,7 @@ package com.netshoes.sample.sleuth.user;
 import com.github.javafaker.Faker;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +48,7 @@ public class Application {
       final User user = new User();
       user.setEmail(faker.internet().emailAddress());
       user.setName(faker.name().fullName());
+      user.setPassword(RandomStringUtils.randomAlphabetic(6));
       return create(user);
     }
 
@@ -60,9 +62,16 @@ public class Application {
       persistedUser = userRepository.save(user);
       log.info("User {} created.", user.getEmail());
 
-      final Notification notification = new Notification(user.getEmail(), "Content");
+      final Notification notification = new Notification(user.getEmail(), buildContent(user));
       restTemplate.postForObject("http://localhost:8081/notify", notification, String.class);
+      log.info("Notification about initial password sent to {}", user.getEmail());
+
       return persistedUser;
+    }
+
+    private String buildContent(User user) {
+      return String.format(
+          "Hi %s, your initial password is %s", user.getName(), user.getPassword());
     }
   }
 }
