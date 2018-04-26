@@ -1,27 +1,21 @@
 package com.netshoes.sample.sleuth.user;
 
 import com.github.javafaker.Faker;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-@EnableJpaRepositories(considerNestedRepositories = true)
 @Slf4j
 public class Application {
 
@@ -29,11 +23,17 @@ public class Application {
     SpringApplication.run(Application.class, args);
   }
 
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
+
   @RestController
   @RequestMapping("/users")
   @AllArgsConstructor
   public class Controller {
     private final Faker faker = new Faker();
+    private RestTemplate restTemplate;
     private UserRepository userRepository;
 
     @GetMapping
@@ -59,25 +59,10 @@ public class Application {
       }
       persistedUser = userRepository.save(user);
       log.info("User {} created.", user.getEmail());
+
+      final Notification notification = new Notification(user.getEmail(), "Content");
+      restTemplate.postForObject("http://localhost:8081/notify", notification, String.class);
       return persistedUser;
-    }
-  }
-
-  @Data
-  @Entity
-  @Table(name = "users")
-  public static class User {
-    @Id private String email;
-    private String name;
-  }
-
-  @Repository
-  public interface UserRepository extends CrudRepository<User, String> {}
-
-  @ResponseStatus(HttpStatus.CONFLICT)
-  public class UserAlreadyExistsException extends Exception {
-    public UserAlreadyExistsException() {
-      super("User already exists");
     }
   }
 }
