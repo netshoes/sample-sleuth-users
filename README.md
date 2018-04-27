@@ -2,7 +2,14 @@
 Simple project to show how spring-cloud-sleuth works.
 
 # Running
+## Application
 ```# mvn spring-boot:run```
+
+## Zipkin
+```
+docker pull openzipkin/zipkin:2.7.3
+docker run -d --name openzipkin-2.7.3 -p 9411:9411 openzipkin/zipkin:2.7.3
+```
 
 # Available APIs
 ## Create user
