@@ -1,9 +1,10 @@
 # Sample for Spring Cloud Sleuth - Users Microservice
-Simple project to show how spring-cloud-sleuth works.
+Simple project to show how spring-cloud-sleuth works. 
+This application depends of [Notification microservice](https://github.com/netshoes/sample-sleuth-notification)
 
 # Running
 ## Application
-```# mvn spring-boot:run```
+```mvn spring-boot:run```
 
 ## Zipkin
 ```
