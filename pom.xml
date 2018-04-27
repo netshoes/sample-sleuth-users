@@ -83,6 +83,7 @@
   </dependencyManagement>
 
   <build>
+    <finalName>sample-sleuth-users</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -90,6 +91,4 @@
       </plugin>
     </plugins>
   </build>
-
-
 </project>
