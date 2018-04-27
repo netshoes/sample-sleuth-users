@@ -6,7 +6,14 @@ This application depends of [Notification microservice](https://github.com/netsh
 
 # Running
 ## Application
+### From source code
 ```mvn spring-boot:run```
+
+### From Docker
+``` 
+docker pull netshoes/sample-sleuth-users
+docker run -d --name sample-sleuth-users -p 8080:8080 netshoes/sample-sleuth-users
+```
 
 ## Zipkin
 ```
