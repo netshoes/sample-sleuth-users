@@ -4,12 +4,13 @@
 Simple project to show how spring-cloud-sleuth works. 
 This application depends of [Notification microservice](https://github.com/netshoes/sample-sleuth-notification)
 
-# Running
-## From Docker Compose
-The easiest way to run this example is from docker compose, simple run at root of project.
+# Quickstart
+The easiest way to run this example with all dependencies is from docker compose, with docker installed simple run at root of project:
 ``` 
 docker-compose up
-``` 
+```
+
+# Running
 ## Dependencies
 First you must install and run the dependencies.
 
