@@ -1,9 +1,9 @@
 package com.netshoes.sample.sleuth.user;
 
 import com.github.javafaker.Faker;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -31,11 +31,18 @@ public class Application {
 
   @RestController
   @RequestMapping("/users")
-  @AllArgsConstructor
   public class Controller {
     private final Faker faker = new Faker();
-    private RestTemplate restTemplate;
-    private UserRepository userRepository;
+    private final RestTemplate restTemplate;
+    private final UserRepository userRepository;
+
+    @Value("${application.notification.address}")
+    private String notificationAddress;
+
+    public Controller(RestTemplate restTemplate, UserRepository userRepository) {
+      this.restTemplate = restTemplate;
+      this.userRepository = userRepository;
+    }
 
     @GetMapping
     public Iterable<User> findAll() {
@@ -63,7 +70,7 @@ public class Application {
       log.info("User {} created.", user.getEmail());
 
       final Notification notification = new Notification(user.getEmail(), buildContent(user));
-      restTemplate.postForObject("http://localhost:8081/notify", notification, String.class);
+      restTemplate.postForObject(notificationAddress + "/notify", notification, String.class);
       log.info("Notification about initial password sent to {}", user.getEmail());
 
       return persistedUser;

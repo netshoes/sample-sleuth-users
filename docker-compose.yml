@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  zipkin:
+    image: openzipkin/zipkin:2.7.3
+    ports:
+      - "9411:9411"
+  notification:
+    image: netshoes/sample-sleuth-notification
+    ports:
+      - "8081:8081"
+    links:
+      - "zipkin"
+    environment:
+      - ZIPKIN_ADDRESS=http://zipkin:9411
+  users:
+    image: netshoes/sample-sleuth-users
+    ports:
+      - "8080:8080"
+    links:
+      - "notification"
+      - "zipkin"
+    environment:
+      - NOTIFICATION_ADDRESS=http://notification:8081
+      - ZIPKIN_ADDRESS=http://zipkin:9411

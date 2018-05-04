@@ -5,6 +5,25 @@ Simple project to show how spring-cloud-sleuth works.
 This application depends of [Notification microservice](https://github.com/netshoes/sample-sleuth-notification)
 
 # Running
+## From Docker Compose
+The easiest way to run this example is from docker compose, simple run at root of project.
+``` 
+docker-compose up
+``` 
+## Dependencies
+First you must install and run the dependencies.
+
+### Zipkin
+```
+docker pull openzipkin/zipkin:2.7.3
+docker run -d -p 9411:9411 --name openzipkin-2.7.3 openzipkin/zipkin:2.7.3
+```
+### Notification microservice
+``` 
+docker pull netshoes/sample-sleuth-notification
+docker run -d --name sample-sleuth-notification -p 8081:8081 netshoes/sample-sleuth-notification
+```
+
 ## Application
 ### From source code
 ```mvn spring-boot:run```
@@ -12,13 +31,7 @@ This application depends of [Notification microservice](https://github.com/netsh
 ### From Docker
 ``` 
 docker pull netshoes/sample-sleuth-users
-docker run -d --name sample-sleuth-users -p 8080:8080 netshoes/sample-sleuth-users
-```
-
-## Zipkin
-```
-docker pull openzipkin/zipkin:2.7.3
-docker run -d --name openzipkin-2.7.3 -p 9411:9411 openzipkin/zipkin:2.7.3
+docker run -d  -e NOTIFICATION_ADDRESS='http://localhost:8081' -e ZIPKIN_ADDRESS='http://localhost:9411' -p 8080:8080 --name sample-sleuth-users netshoes/sample-sleuth-users
 ```
 
 # Available APIs
