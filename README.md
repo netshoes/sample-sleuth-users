@@ -9,6 +9,12 @@ The easiest way to run this example with all dependencies is from docker compose
 ``` 
 docker-compose up
 ```
+This command will start the following services:
+* sample-sleuth-users in port 8080
+* sample-sleuth-notification in port 8081
+* zipkin in port 9411
+
+Don't forget run ```docker-compose down``` after trial this sample.
 
 # Running
 ## Dependencies
